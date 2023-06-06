@@ -1,0 +1,18 @@
+extends layout 
+
+block content
+
+  h1 ID: #{bookInstance._id}
+
+  p #[strong Title:]
+    a(href=bookInstance.book.url) #{bookInstance.book.title}
+  p #[strong Imprint:] #{bookInstance.imprint}
+
+  p #[strong Status:] 
+    span(class={
+      'text-success': bookInstance.status === 'Available',
+      'text-danger' : bookInstance.status === 'Maintenance',
+      'text-warning' : bookInstance.status === 'Loaned' || bookInstance.status === 'Reserved'
+    }) #{bookInstance.status}
+    if bookInstance.status != 'Available'
+      p #[strong Due back:] #{bookInstance.due_back_formatted}
