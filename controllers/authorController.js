@@ -68,8 +68,6 @@ exports.author_create_post = [
     // Extract the validation errors from the request
     const errors = validationResult(req);
 
-    console.log(req.body.date_of_birth);
-
     // Create Author object with escaped and trimmed data.
     const author = new Author({
       first_name: req.body.first_name,
