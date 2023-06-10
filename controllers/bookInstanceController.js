@@ -50,7 +50,7 @@ exports.bookinstance_create_post = [
   body('book', 'Book must be specified').trim().notEmpty().escape(),
   body('imprint', 'Imprint must be specified').trim().notEmpty().escape(),
   body('status').escape(),
-  body('due_back', 'Invalid date).optional({ values: 'falsy' }).isISO8601().toDate(),
+  body('due_back', 'Invalid date').optional({ values: 'falsy' }).isISO8601().toDate(),
 
   // Process request after validation and sanitization.
   asyncHandler(async (req, res, next) => {
