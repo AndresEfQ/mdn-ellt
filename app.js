@@ -20,11 +20,37 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const catalogRouter = require('./routes/catalog');
 
+const compression = require('compression');
+const helmet = require('helmet');
+const RateLimit = require('express-rate-limit');
+
+// Create the Express application object
 const app = express();
+
+// Set up rate limiter: maximum 20 requests per minute
+const limiter = RateLimit({
+  windowMs: 1 * 60 * 1000, // 1 Minute
+  max: 20,
+});
+// Apply rate limiter to all requests.
+app.use(limiter);
+
+// Add helmet to the middleware chain.
+// Set CSP headers to allow our Bootstrap and JQuery to be served
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      'script-src': ['self', 'code.jquery.com', 'cdn.jsdelivr.net'],
+    },
+  })
+);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+
+// Compress all routes
+app.use(compression());
 
 app.use(logger('dev'));
 app.use(express.json());
