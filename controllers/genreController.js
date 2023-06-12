@@ -116,10 +116,55 @@ exports.genre_delete_post = asyncHandler(async (req, res, next) => {
 
 // Display Genre update form on GET.
 exports.genre_update_get = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: Genre update GET');
+  const genre = await Genre.findById(req.params.id).exec();
+
+  if (genre == null) {
+    // genre not found send 404 error
+    const err = new Error('Genre not found');
+    res.status = 404;
+    return next(err);
+  } 
+  
+  res.render('genre_form', {title: 'Update Genre', genre});
+  
 });
 
 // Handle Genre update on POST.
-exports.genre_update_post = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: Genre update POST');
-});
+exports.genre_update_post = [
+  body('name', 'Genre must contain at least 3 characteres')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  
+  asyncHandler(async(req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Update genre object with escaped and trimmed data and old id.
+    const genre = new Genre({
+      name: req.body.name,
+      _id: req.params.id,
+    });
+
+
+    if (!errors.isEmpty()) {
+      // There are errors.
+      // Render form again with sanitized values and error messages.
+      res.render('genre_form', {
+        title: 'Update Genre',
+        errors: errors.array(),
+        genre,
+      });
+    } else {
+      // Data form is valid.
+      // Check if Genre with same name already exists.
+      const genreExists = await Genre.findOne({ name: req.body.name }).exec();
+      if (genreExists) {
+        res.redirect(genreExists.url);
+      } else {
+        const thegenre = await Genre.findByIdAndUpdate(req.params.id, genre, {});
+        res.redirect(thegenre.url);
+      }
+    }
+  }),
+];

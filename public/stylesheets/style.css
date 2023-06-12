@@ -1,5 +1,13 @@
+body {
+  background-color: #aaa;
+}
+
 .sidebar-nav {
   margin-top: 20px;
   padding: 0;
   list-style: none;
+}
+
+a {
+  color: #00a;
 }

@@ -8,8 +8,8 @@ block content
       label(for='book') Book: 
       select(id='book' class='form-control' type='select' placeholder='Select book' name='book' required='true')
         - book_list.sort((a, b) => a.title.toUpperCase() > b.title.toUpperCase() ? 1 : -1);
-        for book in book_list
-          option(value=book._id selected=(bookInstance.book==book._id.toString() ? 'selected' : false) #{book.title}
+        each book in book_list
+          option(value=book._id selected=(selected_book==book._id.toString() ? 'selected' : false)) #{book.title}
     .form-group
       label(for='imprint') Imprint: 
       input(id='imprint' class='form-control' type='text' placeholder='Publisher and date information' name='imprint' required='true' value=(bookInstance===undefined ? '' : bookInstance.imprint))
