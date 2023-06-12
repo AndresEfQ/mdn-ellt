@@ -22,7 +22,11 @@ BookInstanceSchema.virtual('url').get(function () {
 });
 
 BookInstanceSchema.virtual('due_back_formatted').get(function () {
-  return DateTime.fromJSDate(this.due_back).toLocaleString(DateTime.DATE_MED);
+  return DateTime.fromJSDate(this.due_back).toUTC().toLocaleString(DateTime.DATE_MED);
+});
+
+BookInstanceSchema.virtual('iso_due_back').get(function () {
+  return DateTime.fromJSDate(this.due_back).toUTC().toISODate();
 });
 
 // Export model

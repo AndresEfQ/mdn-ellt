@@ -27,17 +27,33 @@ AuthorSchema.virtual('url').get(function () {
 
 AuthorSchema.virtual('formatted_dob').get(function () {
   if (this.date_of_birth) {
-    return DateTime.fromJSDate(this.date_of_birth).toLocaleString(DateTime.DATE_MED);
+    return DateTime.fromJSDate(this.date_of_birth).toUTC().toLocaleString(DateTime.DATE_MED);
   } else {
-    return ' '
+    return ' ';
   }
 });
 
 AuthorSchema.virtual('formatted_dod').get(function () {
   if (this.date_of_death) {
-    return DateTime.fromJSDate(this.date_of_death).toLocaleString(DateTime.DATE_MED);
+    return DateTime.fromJSDate(this.date_of_death).toUTC().toLocaleString(DateTime.DATE_MED);
   } else {
-    return ' '
+    return ' ';
+  }
+});
+
+AuthorSchema.virtual('iso_date_of_birth').get(function () {
+  if (this.date_of_birth) {
+    return DateTime.fromJSDate(this.date_of_birth).toUTC().toISODate();
+  } else {
+    return ' ';
+  }
+});
+
+AuthorSchema.virtual('iso_date_of_death').get(function () {
+  if (this.date_of_death) {
+    return DateTime.fromJSDate(this.date_of_death).toUTC().toISODate();
+  } else {
+    return ' ';
   }
 });
 
